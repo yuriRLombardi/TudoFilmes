@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | TudoFilmes</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="icon" href="../img/icon.png">
+</head>
+<body>
+    <header>
+        <h1>Login | TudoFilmes</h1>
+        <a href="../index.php">Voltar ao início</a>
+    </header>
+    <main>
+        <form action="../php/login.php" method="POST">
+            <h2>Login</h2>
+            
+            <label for="email">E-mail</label>
+            <div class="input" for="email">
+                <input type="email" name="email" id="email" placeholder="usuario@dominio.com" required style="width:93%"/>
+            </div>
+
+            <label for="senha">Senha</label>
+            <div class="input">
+                <input type="password" name="senha" id="senha" placeholder="Password" required style="width:87%"/>
+                <img src="../img/eye-on.png" alt="" onclick="mostrarSenha()" width="20px" id="mostraSenha">
+                <script>
+                    var mostraSenha = document.getElementById("mostraSenha");
+                    var senha = document.getElementById("senha");
+                    var z = 0;
+
+                    function mostrarSenha() {
+                        if(z == 0) {
+                            mostraSenha.setAttribute("src", "../img/eye-off.png");
+                            senha.setAttribute("type", "text");
+                            z++;
+                        }else {
+                            mostraSenha.setAttribute("src", "../img/eye-on.png");
+                            senha.setAttribute("type", "password");
+                            z--;
+                        }
+                    }
+                </script>
+            </div>
+
+            <button type="submit">ENTRAR</button>
+            <p>Não possui conta? <a href="./cadastro.html">cadastre-se</a> agora mesmo.</p>
+        </form>
+    </main>
+</body>
+</html>

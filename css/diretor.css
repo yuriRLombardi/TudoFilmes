@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+body {
+    margin: 0;
+    background-image: url(../img/back.jpg);
+    background-repeat: no-repeat;
+    background-size: 120%;
+    background-attachment: fixed;
+    background-position: top;
+    display: inline;
+}
+
+header {
+    width: 100%;
+    background-color: rgb(55, 55, 55);
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+}
+
+header h1 {
+    font-weight: bold;
+    color: white;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 10px;
+}
+
+h1 a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+main {
+    width: 99vw;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+header a:hover {
+    transition: 0.3s ease-in-out;
+    background-color: rgb(88, 88, 196);
+}
+
+header div {
+    display: flex;
+    position: fixed;
+    width: 300px;
+    height: 100px;
+    left: 50px;
+    top: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#principal {
+    background-color: rgb(55, 55, 55);
+    width: 60vw;
+    margin-top: 150px;
+    padding: 50px;
+    border-radius: 20px;
+}
+
+#principal h1 {
+    font-weight: bold;
+    font-size: 50px;
+    margin: 0;
+}
+
+#principal p {
+    font-size: 20px;
+    max-width: 100%;
+    margin: 0;
+}
+
+#primeira_parte img {
+    border-radius: 10px;
+}
+
+#primeira_parte {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#infos {
+    margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+#infos p {
+    max-width: 80%;
+    margin-top: 30px;
+}
+
+#infos h3 {
+    margin: 40px 0 5px 0;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+#infos i {
+    font-size: 20px;
+}
+
+iframe {
+    width: 768px;
+    height: 460px;
+    border-radius: 10px;
+}
+
+#conjunto_estrelas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#conjunto_estrelas h3 {
+    margin: 10px;
+}
+
+#estrelas {
+    height: 20px;
+}
+
+#primeira_linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#primeira_linha h1 {
+    max-width: 65%;
+    font-size: 40px;
+}
+
+.streaming {
+    width: 100%;
+    height: 50px;
+}
+
+.streaming p {
+    padding: 20px;
+}
+
+.separacao {
+    width: 100%;
+    height: 2px;
+    background-color: rgb(150, 150, 150);
+}
+
+#segunda_parte {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-top: 130px;
+}
+
+#streamings {
+    margin-left: 50px;
+    width: 30%;
+}
+
+#streaming {
+    display: flex;
+    flex-direction: column;
+}
+
+#streaming div p {
+    padding: 20px 0 20px 0;
+}
+
+#gendur {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+footer {
+    width: 100%;
+    padding: 30px 0 30px 0;
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+textarea {
+    color: rgb(218, 218, 218);
+    background-color: rgb(55, 55, 55);
+    outline: none;
+    border: 2px solid rgb(218, 218, 218);
+    border-radius: 5px;
+    padding: 5px;
+    resize: none;
+}
+
+#inserirComentario {
+    width: min-content;
+    margin-top: 50px;
+}
+
+#inserirComentario div {
+    display: block;
+}
+
+#inserirComentario div button {
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#inserirComentario h2 {
+    font-weight: bold;
+}
+
+#divEstrelas{
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.infos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.infos h2 {
+    display: flex;
+    align-items: center;
+}
+
+form {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 40px 0;
+}
+
+.filmes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(55, 55, 55);
+    box-shadow: 0 0 10px black;
+    width: 205px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    align-self: center;
+    justify-self: center;
+}
+
+.filmes img {
+    width: 170px;
+    border-radius: 5px;
+}
+
+.filmes h3 {
+    color: white;
+    margin: 0;
+}
+
+.filmes div {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
