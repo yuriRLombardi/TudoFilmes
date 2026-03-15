@@ -4,23 +4,26 @@ session_start();
 if(isset($_POST["botao_clicado"])) {
     $id_clicado = $_POST["botao_clicado"];
 
-    $comando = mysqli_query($connection, "select * from diretor where id = $id_clicado");
-    $result = mysqli_fetch_array($comando);
+    $comando = $connection->prepare("select * from diretor where id = :id");
+    $comando->execute([':id' => $id_clicado]);
+    $result = $comando->fetch(PDO::FETCH_ASSOC);
     $nome = $result['nome'];
     $biografia = $result['biografia'];
     $num_avaliacoes = 0;
     $soma_avaliacoes = 0;
 
-    $selectFilme = mysqli_query($connection, "select * from filme where id_diretor=$id_clicado");
-    if(mysqli_num_rows($selectFilme) > 0) {
-        while($arrayEstrelas = mysqli_fetch_array($selectFilme)) {
-            $soma_avaliacoes = $soma_avaliacoes + $arrayEstrelas['media_estrelas'];
-            $num_avaliacoes++;
-        }
+    $selectFilme = $connection->prepare("select * from filme where id_diretor=:id");
+    $selectFilme->execute([':id' => $id_clicado]);
+    
+    while($arrayEstrelas = $selectFilme->fetch(PDO::FETCH_ASSOC)) {
+        $soma_avaliacoes = $soma_avaliacoes + $arrayEstrelas['media_estrelas'];
+        $num_avaliacoes++;
+    }
+    if($num_avaliacoes == 0) {
+        $media_estrelas = 0;
+    }else {
         $media_estrelas = $soma_avaliacoes / $num_avaliacoes;
         $media_estrelas = substr($media_estrelas, 0, 3);
-    }else {
-        $media_estrelas = 0;
     }
 }else {
     echo  "Não carregou nd.";
@@ -68,8 +71,9 @@ if(isset($_POST["botao_clicado"])) {
             <div id="filmes">
                 <form action="./filme.php" method="post">
                 <?php
-                    $select = mysqli_query($connection, "select * from filme where id_diretor=$id_clicado");
-                    while($arrayFilmes = mysqli_fetch_array($select)) {
+                    $select = $connection->prepare("select * from filme where id_diretor= :id");
+                    $select->execute([':id' => $id_clicado]);
+                    while($arrayFilmes = $select->fetch()) {
                         echo "
                         <button type='submit' value='" . $arrayFilmes['id'] . "' name='botao_clicado' class='filmes'>
                                 <img src='" . $arrayFilmes['caminho_img'] . "' alt=''>

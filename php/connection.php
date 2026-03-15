@@ -1,3 +1,4 @@
 <?php
-$connection = mysqli_connect("localhost","root","","tudofilmes");
+    $connection = new PDO('mysql:host=localhost;dbname=tudofilmes', 'root', '');
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 ?>

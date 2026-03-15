@@ -110,6 +110,8 @@ form button {
     border: none;
     outline: none;
     background: transparent;
+    align-self: center;
+    justify-self: center;
 }
 
 .filmes img {
@@ -287,14 +289,15 @@ header ul button {
 
 #adicionar {
     text-decoration: none;
-    width: 160px;
     align-self: center;
     justify-self: center;
+    width: 200px;
+    height: 100%;
 }
 
 .filmes div {
     height: 237px;
-    width: 100%;
+    width: 160px;
     background-color: white;
     border-radius: 5px;
     display: flex;

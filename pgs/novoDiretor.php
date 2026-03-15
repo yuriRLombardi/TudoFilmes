@@ -24,9 +24,10 @@
                         include "../php/connection.php";
 
                         $string = "select * from genero";
-                        $sql = mysqli_query($connection, $string);
+                        $sql = $connection->prepare($string);
+                        $sql->execute();
 
-                        while($array = mysqli_fetch_array($sql)) {
+                        while($array = $sql->fetch(PDO::FETCH_ASSOC)) {
                             echo "<button type='submit' name='genero' value='" . $array['id'] . "'><li>" . $array['genero'] . "</li></button>";
                         }
                         ?>

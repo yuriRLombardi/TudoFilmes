@@ -17,9 +17,11 @@ if($_SESSION["id"] != "" && $_SESSION["nome"] != "" && $_SESSION["email"] != "" 
         $fez_upload = move_uploaded_file($arquivo["tmp_name"], $pasta . $nomeArquivo . "." . $extensao);
         if($fez_upload) {
             $path = $pasta . $nomeArquivo . "." . $extensao;
-            $result = mysqli_query($connection,"select caminho_img from usuario where id = $idLogado");
+            $result = $connection->prepare("select caminho_img from usuario where id = :id");
+            $result->execute([':id' => $idLogado]);
 
-            mysqli_query($connection ,"update usuario set caminho_img = '" . $path . "' where id= " . $idLogado);
+            $comandoTrocaFoto = $connection->prepare("update usuario set caminho_img=:caminho where id=:id");
+            $comandoTrocaFoto->execute([':caminho' => $path, ':id' => $idLogado]);
         }
         $_SESSION['path'] = $path;
     }
@@ -27,10 +29,11 @@ if($_SESSION["id"] != "" && $_SESSION["nome"] != "" && $_SESSION["email"] != "" 
     $media_comentarios = [];
     $soma_estrelas = 0;
 
-    $contaString = "select * from avaliacao where id_usuario=$idLogado";
-    $sql = mysqli_query($connection, $contaString);
+    $contaString = "select * from avaliacao where id_usuario=:id";
+    $sql = $connection->prepare($contaString);
+    $sql->execute([':id' => $idLogado]);
 
-    while($array = mysqli_fetch_array($sql)) {
+    while($array = $sql->fetch(PDO::FETCH_ASSOC)) {
         $soma_estrelas = $soma_estrelas + $array['num_estrelas'];
         array_push($media_comentarios, $array['num_estrelas']);
     }
@@ -137,10 +140,11 @@ if($_SESSION["id"] != "" && $_SESSION["nome"] != "" && $_SESSION["email"] != "" 
                 <form action="./mostraPlaylist.php" method="post">
                     <?php
                         $id_logado = $_SESSION['id'];
-                        $stringPlaylists = "select * from playlist where id_usuario=$id_logado";
-                        $sqlPlaylists = mysqli_query($connection, $stringPlaylists);
+                        $stringPlaylists = "select * from playlist where id_usuario=:id";
+                        $sqlPlaylists = $connection->prepare($stringPlaylists);
+                        $sqlPlaylists->execute([':id' => $idLogado]);
 
-                        while($arrayPlaylist = mysqli_fetch_array($sqlPlaylists)) {
+                        while($arrayPlaylist = $sqlPlaylists->fetch(PDO::FETCH_ASSOC)) {
                             $id_playlist = $arrayPlaylist['id'];
                             $nome = $arrayPlaylist['nome'];
                             $descricao = $arrayPlaylist['descricao'];
@@ -163,9 +167,10 @@ if($_SESSION["id"] != "" && $_SESSION["nome"] != "" && $_SESSION["email"] != "" 
                 <?php
 
                 $cont = 0;
-                $contaString = "select * from avaliacao where id_usuario=$idLogado";
-                $sql = mysqli_query($connection, $contaString);
-                while($array2 = mysqli_fetch_array($sql)) {
+                $contaString = "select * from avaliacao where id_usuario= :id";
+                $sql = $connection->prepare($contaString);
+                $sql->execute([':id' => $idLogado]);
+                while($array2 = $sql->fetch(PDO::FETCH_ASSOC)) {
                     $id_filme = $array2['id_filme'];
                     $resenha = $array2['resenha'];
                     $num_estrelas = $array2['num_estrelas'];
@@ -177,9 +182,10 @@ if($_SESSION["id"] != "" && $_SESSION["nome"] != "" && $_SESSION["email"] != "" 
 
                     $hora = $array2['hora'];
 
-                    $stringAvaliacoes = "select nomeFilme, caminho_img from filme where id=$id_filme";
-                    $sql2 = mysqli_query($connection, $stringAvaliacoes);
-                    $filme = mysqli_fetch_array($sql2);
+                    $stringAvaliacoes = "select nomeFilme, caminho_img from filme where id= :id";
+                    $sql2 = $connection->prepare($stringAvaliacoes);
+                    $sql2->execute([':id' => $id_filme]);
+                    $filme = $sql2->fetch(PDO::FETCH_ASSOC);
 
                     $nomeFilme = $filme['nomeFilme'];
                     $caminho_img = $filme['caminho_img'];

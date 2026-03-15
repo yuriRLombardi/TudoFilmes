@@ -24,9 +24,10 @@
                         include "../php/connection.php";
 
                         $string = "select * from genero";
-                        $sql = mysqli_query($connection, $string);
+                        $sql = $connection->prepare($string);
+                        $sql->execute();
 
-                        while($array = mysqli_fetch_array($sql)) {
+                        while($array = $sql->fetch(PDO::FETCH_ASSOC)) {
                             echo "<button type='submit' name='genero' value='" . $array['id'] . "'><li>" . $array['genero'] . "</li></button>";
                         }
                         ?>
@@ -73,9 +74,10 @@
             <select name="genero1" class="generos" id="genero1">
                 <?php
                     $generos = "select * from genero";
-                    $generosSQL = mysqli_query($connection, $generos);
+                    $generosSQL = $connection->prepare($generos);
+                    $generosSQL->execute();
 
-                    while($arrayGeneros = mysqli_fetch_array($generosSQL)) {
+                    while($arrayGeneros = $generosSQL->fetch(PDO::FETCH_ASSOC)) {
                         $idGenero = $arrayGeneros['id'];
                         $nomeGenero = $arrayGeneros['genero'];
 
@@ -88,9 +90,10 @@
             <select name="genero2" class="generos" id="genero2">
                 <?php
                     $generos = "select * from genero";
-                    $generosSQL = mysqli_query($connection, $generos);
+                    $generosSQL = $connection->prepare($generos);
+                    $generosSQL->execute();
 
-                    while($arrayGeneros = mysqli_fetch_array($generosSQL)) {
+                    while($arrayGeneros = $generosSQL->fetch(PDO::FETCH_ASSOC)) {
                         $idGenero = $arrayGeneros['id'];
                         $nomeGenero = $arrayGeneros['genero'];
 
@@ -103,9 +106,10 @@
             <select name="genero3" class="generos" id="genero3">
                 <?php
                     $generos = "select * from genero";
-                    $generosSQL = mysqli_query($connection, $generos);
+                    $generosSQL = $connection->prepare($generos);
+                    $generosSQL->execute();
 
-                    while($arrayGeneros = mysqli_fetch_array($generosSQL)) {
+                    while($arrayGeneros = $generosSQL->fetch(PDO::FETCH_ASSOC)) {
                         $idGenero = $arrayGeneros['id'];
                         $nomeGenero = $arrayGeneros['genero'];
 
@@ -145,9 +149,10 @@
             <select name="diretor" class="generos">
                 <?php
                     $diretores = "select * from diretor";
-                    $diretorSQL = mysqli_query($connection, $diretores);
+                    $diretorSQL = $connection->prepare($diretores);
+                    $diretorSQL->execute();
 
-                    while($arrayDiretor = mysqli_fetch_array($diretorSQL)) {
+                    while($arrayDiretor = $diretorSQL->fetch(PDO::FETCH_ASSOC)) {
                         $idDiretor = $arrayDiretor['id'];
                         $nomeDiretor = $arrayDiretor['nome'];
 

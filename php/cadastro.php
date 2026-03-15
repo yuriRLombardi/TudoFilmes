@@ -16,11 +16,11 @@
 
                 $dataNascConv = date('Y-m-d', strtotime(str_replace('/', '-', $dataNasc)));
 
-                $comando = "insert into usuario (nome, email, senha, dataNasc) values ('$nome', '$email', '$senha', '$dataNascConv')";
-                $comando2 = mysqli_query($connection, "select * from usuario");
+                $comando2 = $connection->prepare("select * from usuario");
+                $comando2->execute();
                 $valido = true;
                 
-                while($array = mysqli_fetch_array($comando2)) {
+                while($array = $comando2->fetch(PDO::FETCH_ASSOC)) {
                     if($email == $array['email']) {
                         $valido = false;
                         break;
@@ -28,7 +28,9 @@
                 }
 
                 if($valido == true) {
-                    mysqli_query($connection, $comando);
+                    $string = "insert into usuario (nome, email, senha, dataNasc) values (:nome, :email, :senha, :dataNasc)";
+                    $comando = $connection->prepare($string);
+                    $comando->execute([':nome' => $nome, ':email' => $email, ':senha' => $senha, ':dataNasc' => $dataNascConv]);
 
                     echo "<script>
                         localStorage.setItem('user', '$nome');
@@ -49,14 +51,27 @@
                 </script>";
             }
             
-            $array = mysqli_fetch_array(mysqli_query($connection,'select * from usuario where email = "' . $email . '";'));
+            $sqlSession = $connection->prepare('select * from usuario where email = :email;');
+            $sqlSession->execute([':email' => $email]);
+            $array = $sqlSession->fetch(PDO::FETCH_ASSOC);
+            $id = $array['id'];
 
             session_start();
-            $_SESSION['id'] = $array['id'];
+            $_SESSION['id'] = $id;
             $_SESSION['nome'] = $array['nome'];
             $_SESSION['email'] = $array['email'];
             $_SESSION['senha'] = $array['senha'];
             $_SESSION['path'] = $array['caminho_img'];
+            $dataNasc = substr($array['dataNasc'], 0, 4);
+
+            $_SESSION['dataNasc'] = $dataNasc;
+            
+            $stringCriaPlaylist = "insert into playlist (nome, descricao, id_usuario) values ('Assistidos', 'Filmes já assistidos', :id_usuario)";
+            $stringCriaPlaylist2 = "insert into playlist (nome, descricao, id_usuario) values ('Favoritos', 'Filmes favoritos', :id_usuario)";
+            $comandoCriaPlaylist = $connection->prepare($stringCriaPlaylist);
+            $comandoCriaPlaylist2 = $connection->prepare($stringCriaPlaylist2);
+            $comandoCriaPlaylist->execute([':id_usuario' => $id]);
+            $comandoCriaPlaylist2->execute([':id_usuario' => $id]);
             ?>
     </body>
 </html>

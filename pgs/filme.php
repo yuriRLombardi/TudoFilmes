@@ -20,31 +20,36 @@ if(isset($_POST["botao_clicado"]) || isset($_GET['botao_clicado'])) {
             $data = $agora->format('Y-m-d');
             $hora = $agora->format('H:i');
 
-            $string = "insert into avaliacao(num_estrelas, id_usuario, resenha, id_filme, data, hora) values ($estrelas, $id_usuario, '$resenha', $id_clicado, '$data', '$hora')";
-            $comando = mysqli_query($connection, $string);
+            $string = "insert into avaliacao(num_estrelas, id_usuario, resenha, id_filme, data, hora) values (:num_estrelas, :id_usuario, :resenha, :id_filme, :data, :hora)";
+            $stmt = $connection->prepare($string);
+            $stmt->execute([':num_estrelas' => $estrelas, ':id_usuario' => $id_usuario, ':resenha' => $resenha, ':id_filme' => $id_clicado, ':data' => $data, ':hora' => $hora]);
 
-            $pegaEstrelas = "select num_estrelas from avaliacao where id_filme=$id_clicado";
-            $query = mysqli_query($connection, $pegaEstrelas);
+            $pegaEstrelas = "select num_estrelas from avaliacao where id_filme= :id";
+            $stmtEstrelas = $connection->prepare($pegaEstrelas);
+            $stmtEstrelas->execute([':id' => $id_clicado]);
+            $sqlEstrelas = $stmtEstrelas->fetch(PDO::FETCH_ASSOC);
 
-            if(mysqli_num_rows($query) != 0) {
+            if(count($stmtEstrelas->fetchAll(PDO::FETCH_ASSOC)) != 0) {
                 $numAvaliacoes = 0;
                 $somaAvaliacoes = 0;
-                while($arrayEstrelas = mysqli_fetch_array($query)) {
+                while($arrayEstrelas = $stmtEstrelas->fetch(PDO::FETCH_ASSOC)) {
                     $numAvaliacoes++;
                     $somaAvaliacoes = $somaAvaliacoes + $arrayEstrelas['num_estrelas'];
                 }
 
                 $avaliacoes = $somaAvaliacoes / $numAvaliacoes;
                 $avaliacoes = substr($avaliacoes, 0, 3);
-                $insereEstrelas = "update filme set media_estrelas=$avaliacoes where id=$id_clicado";
-                $query = mysqli_query($connection, $insereEstrelas);
+                $insereEstrelas = "update filme set media_estrelas=$avaliacoes where id= :id";
+                $query = $connection->prepare($insereEstrelas);
+                $query->execute([':id' => $id_clicado]);
             }
         }
         
     }
 
-    $comando = mysqli_query($connection, "select * from filme where id = $id_clicado");
-    $result = mysqli_fetch_array($comando);
+    $comando = $connection->prepare("select * from filme where id = :id");
+    $comando->execute([':id' => $id_clicado]);
+    $result = $comando->fetch(PDO::FETCH_ASSOC);
     $nome = $result['nomeFilme'];
     $media_estrelas = $result['media_estrelas'];
     $genero = $result['genero'];
@@ -60,9 +65,19 @@ if(isset($_POST["botao_clicado"]) || isset($_GET['botao_clicado'])) {
     $generoPesquisa1 = $generoArray[0];
     $generoPesquisa2 = $generoArray[1];
     $generoPesquisa3 = $generoArray[2];
-    $comandoGenero1 = mysqli_fetch_array(mysqli_query($connection, "select genero from genero where id = $generoPesquisa1"));
-    $comandoGenero2 = mysqli_fetch_array(mysqli_query($connection, "select genero from genero where id = $generoPesquisa2"));
-    $comandoGenero3 = mysqli_fetch_array(mysqli_query($connection, "select genero from genero where id = $generoPesquisa3"));
+
+    $comando1 = $connection->prepare("select genero from genero where id = :id");
+    $comando1->execute([':id' => $generoPesquisa1]);
+    $comandoGenero1 = $comando1->fetch(PDO::FETCH_ASSOC);
+
+    $comando2 = $connection->prepare("select genero from genero where id = :id");
+    $comando2->execute([':id' => $generoPesquisa2]);
+    $comandoGenero2 = $comando2->fetch(PDO::FETCH_ASSOC);
+
+    $comando3 = $connection->prepare("select genero from genero where id = :id");
+    $comando3->execute([':id' => $generoPesquisa3]);
+    $comandoGenero3 = $comando3->fetch(PDO::FETCH_ASSOC);
+
 
     $genero1 = $comandoGenero1['genero'];
     $genero2 = $comandoGenero2['genero'];
@@ -166,9 +181,6 @@ if(isset($_POST["botao_clicado"]) || isset($_GET['botao_clicado'])) {
                     </div>
                 </div>
             </div>
-            <form action="../php/adicionaPlaylist.php" method="post">
-                
-            </form>
 
             <div id="comentarioPlaylist">
                 <form action="filme.php" method="post" id="inserirComentario">
@@ -227,10 +239,11 @@ if(isset($_POST["botao_clicado"]) || isset($_GET['botao_clicado'])) {
                                     </script>";
                                         
                                     $id_logado = $_SESSION['id'];
-                                    $stringPlaylists = "select * from playlist where id_usuario=$id_logado";
-                                    $sqlPlaylists = mysqli_query($connection, $stringPlaylists);
+                                    $stringPlaylists = "select * from playlist where id_usuario= :id";
+                                    $sqlPlaylists = $connection->prepare($stringPlaylists);
+                                    $sqlPlaylists->execute([':id' => $id_logado]);
 
-                                    while($arrayPlaylist = mysqli_fetch_array($sqlPlaylists)) {
+                                    while($arrayPlaylist = $sqlPlaylists->fetch(PDO::FETCH_ASSOC)) {
                                         $id_playlist = $arrayPlaylist['id'];
                                         $nome = $arrayPlaylist['nome'];
                                         $descricao = $arrayPlaylist['descricao'];
@@ -255,11 +268,12 @@ if(isset($_POST["botao_clicado"]) || isset($_GET['botao_clicado'])) {
             <form action="usuarioForeign.php" method="post" id="comentarios">
                 <?php 
                 
-                    $string2 = "select * from avaliacao where id_filme=$id_clicado";
-                    $sql = mysqli_query($connection, $string2);
+                    $string2 = "select * from avaliacao where id_filme= :id";
+                    $sql = $connection->prepare($string2);
+                    $sql->execute([':id' => $id_clicado]);
 
 
-                    while($array = mysqli_fetch_array($sql)) {
+                    while($array = $sql->fetch(PDO::FETCH_ASSOC)) {
                         $id_usuario2 = $array['id_usuario'];
                         $num_estrelas2 = $array['num_estrelas'];
                         $resenha2 = $array['resenha'];
@@ -271,8 +285,10 @@ if(isset($_POST["botao_clicado"]) || isset($_GET['botao_clicado'])) {
 
                         $hora2 = $array['hora'];
 
-                        $string3 = "select nome, caminho_img from usuario where id=$id_usuario2";
-                        $array2 = mysqli_fetch_array(mysqli_query($connection, $string3));
+                        $string3 = "select nome, caminho_img from usuario where id= :id";
+                        $sqlArray2 = $connection->prepare($string3);
+                        $sqlArray2->execute([':id' => $id_usuario2]);
+                        $array2 = $sqlArray2->fetch(PDO::FETCH_ASSOC);
                         $nomeUsuario = $array2['nome'];
                         $img = $array2['caminho_img'];
 

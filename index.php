@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -21,9 +24,10 @@
                         include "./php/connection.php";
 
                         $string = "select * from genero";
-                        $sql = mysqli_query($connection, $string);
+                        $sql = $connection->prepare($string);
+                        $sql->execute();
 
-                        while($array = mysqli_fetch_array($sql)) {
+                        while($array = $sql->fetch(PDO::FETCH_ASSOC)) {
                             echo "<button type='submit' name='genero' value='" . $array['id'] . "'><li>" . $array['genero'] . "</li></button>";
                         }
                         ?>
@@ -56,10 +60,11 @@
         <?php
 
             $stringTop3 = "select * from filme where ano_publicacao = 2025 order by media_estrelas desc";
-            $sqlTop3 = mysqli_query($connection, $stringTop3);
+            $sqlTop3 = $connection->prepare($stringTop3);
+            $sqlTop3->execute();
             $cont = 1;
 
-            while($arrayTop3 = mysqli_fetch_array($sqlTop3)) {
+            while($arrayTop3 = $sqlTop3->fetch(PDO::FETCH_ASSOC)) {
                 
                 switch($cont) {
                     case 1:
@@ -165,17 +170,73 @@
                     </div>
                 </button>
             </div>
+            <?php
+
+            $genero1 = 1;
+            $genero2 = 3;
+            $genero3 = 8;
             
-            <h1 id="acaoTitle">Ficção Científica</h1>
-            <div id="acao">
+            if(isset($_SESSION['dataNasc']) && $_SESSION['dataNasc'] != null) {
+
+                $dataNasc = $_SESSION['dataNasc'];
+                if(2025 - $dataNasc <= 25) {
+                    $genero1 = 1;
+                    $genero2 = 3;
+                    $genero3 = 8;
+                }else {
+                    if(2025 - $dataNasc <= 35) {
+                        $genero1 = 1;
+                        $genero2 = 4;
+                        $genero3 = 9;
+
+                    }else {
+                        if(2025 - $dataNasc <= 45) {
+                            $genero1 = 4;
+                            $genero2 = 9;
+                            $genero3 = 11;
+
+                        }else {
+                            $genero1 = 4;
+                            $genero2 = 9;
+                            $genero3 = 11;
+                            
+                        }
+                    }
+                }
+            }
+
+            $comandoGenero1 = $connection->prepare("select * from genero where id= :id");
+            $comandoGenero1->execute([':id' => $genero1]);
+            if($row = $comandoGenero1->fetch(PDO::FETCH_ASSOC)) {
+                $nomeGenero1 = $row['genero'];
+            }
+            
+            $comandoGenero2 = $connection->prepare("select * from genero where id= :id");
+            $comandoGenero2->execute([':id' => $genero2]);
+            if($row = $comandoGenero2->fetch(PDO::FETCH_ASSOC)) {
+                $nomeGenero2 = $row['genero'];
+            }
+            
+            $comandoGenero3 = $connection->prepare("select * from genero where id= :id");
+            $comandoGenero3->execute([':id' => $genero3]);
+            if($row = $comandoGenero3->fetch(PDO::FETCH_ASSOC)) {
+                $nomeGenero3 = $row['genero'];
+            }
+
+            ?>
+            
+            <h1 class="generoTitle"><?php echo $nomeGenero1 ?></h1>
+            <div class="genero">
                 <?php
-                    $comando = mysqli_query($connection, "select * from filme where genero like '6, %' or genero like '%, 6, %' or genero like '%, 6'");
-                    while($array = mysqli_fetch_array($comando)) {
-                        $caminho = substr($array['caminho_img'], 1);
-                        echo "<button type='submit' value='" . $array['id'] ."' name='botao_clicado'>
+                    $comando2 = $connection->prepare("select * from filme where genero like :genero or genero like :genero2 or genero like :genero3");
+                    $comando2->execute([':genero' => "$genero1, %", ':genero2' => "%, $genero1, %", ':genero3' => "%, $genero1"]);
+
+                    while($array2 = $comando2->fetch(PDO::FETCH_ASSOC)) {
+                        $caminho = substr($array2['caminho_img'], 1);
+                        echo "<button type='submit' value='" . $array2['id'] ."' name='botao_clicado'>
                                 <div class='filmes'>
                                     <img src='" . $caminho . "' alt=''>
-                                    <h3>" . $array['nomeFilme'] . "</h3>
+                                    <h3>" . $array2['nomeFilme'] . "</h3>
                                 </div>
                             </button>";
                     }
@@ -183,16 +244,18 @@
                 ?>
             </div>
             
-            <h1 id="dramaTitle">Drama</h1>
-            <div id="drama">
+            <h1 class="generoTitle"><?php echo $nomeGenero2 ?></h1>
+            <div class="genero">
                 <?php
-                    $comando = mysqli_query($connection, "select * from filme where genero like '4, %' or genero like '%, 4, %' or genero like '%, 4'");
-                    while($array = mysqli_fetch_array($comando)) {
-                        $caminho = substr($array['caminho_img'], 1);
-                        echo "<button type='submit' value='" . $array['id'] ."' name='botao_clicado'>
+                    $comando2 = $connection->prepare("select * from filme where genero like :genero or genero like :genero2 or genero like :genero3");
+                    $comando2->execute([':genero' => "$genero2, %", ':genero2' => "%, $genero2, %", ':genero3' => "%, $genero2"]);
+
+                    while($array2 = $comando2->fetch(PDO::FETCH_ASSOC)) {
+                        $caminho = substr($array2['caminho_img'], 1);
+                        echo "<button type='submit' value='" . $array2['id'] ."' name='botao_clicado'>
                                 <div class='filmes'>
                                     <img src='" . $caminho . "' alt=''>
-                                    <h3>" . $array['nomeFilme'] . "</h3>
+                                    <h3>" . $array2['nomeFilme'] . "</h3>
                                 </div>
                             </button>";
                     }
@@ -200,23 +263,25 @@
                 ?>
             </div>
             
-            <h1 id="animacaoTitle">Ação</h1>
-            <div id="animacao">
+            <h1 class="generoTitle"><?php echo $nomeGenero3 ?></h1>
+            <div class="genero">
                 <?php
-                include "./php/connection.php";
-                    $comando = mysqli_query($connection, "select * from filme where genero like '1, %' or genero like '%, 1, %' or genero like '%, 1'");
-                    while($array = mysqli_fetch_array($comando)) {
-                        $caminho = substr($array['caminho_img'], 1);
-                        echo "<button type='submit' value='" . $array['id'] ."' name='botao_clicado'>
+                    $comando2 = $connection->prepare("select * from filme where genero like :genero or genero like :genero2 or genero like :genero3");
+                    $comando2->execute([':genero' => "$genero3, %", ':genero2' => "%, $genero3, %", ':genero3' => "%, $genero3"]);
+
+                    while($array2 = $comando2->fetch(PDO::FETCH_ASSOC)) {
+                        $caminho = substr($array2['caminho_img'], 1);
+                        echo "<button type='submit' value='" . $array2['id'] ."' name='botao_clicado'>
                                 <div class='filmes'>
                                     <img src='" . $caminho . "' alt=''>
-                                    <h3>" . $array['nomeFilme'] . "</h3>
+                                    <h3>" . $array2['nomeFilme'] . "</h3>
                                 </div>
                             </button>";
                     }
                 
                 ?>
             </div>
+            
         </form>
     </main>
     <footer>

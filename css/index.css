@@ -170,7 +170,7 @@ form button {
     margin: 100px 0 30px 50px;
 }
 
-#acaoTitle, #dramaTitle, #animacaoTitle {
+.generoTitle {
     text-align: center;
     color: white;
     margin: 70px 0 30px 0;
@@ -316,7 +316,7 @@ header ul button {
     margin: 0 30px 0 30px;
 }
 
-#acao, #drama, #animacao {
+.genero {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 40px 0;

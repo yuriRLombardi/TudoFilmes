@@ -341,7 +341,6 @@ input {
     width: 100%;
     max-height: 300px;
     height: 300px;
-    position: relative;
     bottom: 0;
     right: 0;
     border: 2px solid white;

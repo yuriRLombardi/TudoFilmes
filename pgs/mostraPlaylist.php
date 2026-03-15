@@ -3,8 +3,10 @@ include "../php/connection.php";
 
 if(isset($_POST['id_playlist'])) {
     $id_playlist = $_POST['id_playlist'];
-    $stringPlaylist = "select * from playlist where id=$id_playlist";
-    $resultado = mysqli_fetch_array(mysqli_query($connection, $stringPlaylist));
+    $stringPlaylist = "select * from playlist where id=:id";
+    $sqlPlaylist = $connection->prepare($stringPlaylist);
+    $sqlPlaylist->execute([':id' => $id_playlist]);
+    $resultado = $sqlPlaylist->fetch(PDO::FETCH_ASSOC);
 }
 
 ?>
@@ -30,20 +32,25 @@ if(isset($_POST['id_playlist'])) {
     <div id="filmes">
         <form action="./filme.php" id="resultado" method="post">
             <?php
-                $filmes = explode(', ', $resultado['id_filmes']);
+                if($resultado['id_filmes'] != null) {
+                    $filmes = explode(', ', $resultado['id_filmes']);
 
-                for($i = 0; $i < count($filmes); $i++) {
-                    $id_filme = $filmes[$i];
-                    $stringFilme = "select * from filme where id=$id_filme";
-                    $sql = mysqli_query($connection, $stringFilme);
-                    $array = mysqli_fetch_array($sql);
+                    for($i = 0; $i < count($filmes); $i++) {
+                        $id_filme = $filmes[$i];
+                        $stringFilme = "select * from filme where id=:id";
+                        $sql = $connection->prepare($stringFilme);
+                        $sql->execute([':id' => $id_filme]);
+                        $array = $sql->fetch(PDO::FETCH_ASSOC);
 
-                    echo "<button type='submit' value='" . $array['id'] . "' name='botao_clicado'>
-                        <div class='filmes'>
-                            <img src='" . $array['caminho_img'] . "' alt=''>
-                            <h3>" . $array['nomeFilme'] . "</h3>
-                        </div>
-                    </button>";
+                        echo "<button type='submit' value='" . $array['id'] . "' name='botao_clicado'>
+                            <div class='filmes'>
+                                <img src='" . $array['caminho_img'] . "' alt=''>
+                                <h3>" . $array['nomeFilme'] . "</h3>
+                            </div>
+                        </button>";
+                    }
+                }else {
+                    echo "<div id='aviso' style='margin-top: 170px;'><h1>Nenhum filme cadastrado</h1></div>";
                 }
             ?>
         </form>    

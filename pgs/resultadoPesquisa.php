@@ -25,9 +25,10 @@
                         include "../php/connection.php";
 
                         $string = "select * from genero";
-                        $sql = mysqli_query($connection, $string);
+                        $sql = $connection->prepare($string);
+                        $sql->execute();
 
-                        while($array = mysqli_fetch_array($sql)) {
+                        while($array = $sql->fetch(PDO::FETCH_ASSOC)) {
                             echo "<button type='submit' name='genero' value='" . $array['id'] . "'><li>" . $array['genero'] . "</li></button>";
                         }
                         ?>
@@ -63,12 +64,12 @@
         
         if(isset($_POST['barraPesquisa']) && !isset($_POST['genero'])) {
             $nomeFilme = $_POST['barraPesquisa'];
-            $string = "select * from filme where nomeFilme like '" . $nomeFilme . "%'";
+            $string = "select * from filme where nomeFilme like :nome";
             
-            $query = mysqli_query($connection, $string);
+            $query = $connection->prepare($string);
+            $query->execute([':nome' => "$nomeFilme%"]);
             echo "<form action='./filme.php' id='resultado' method='post'>";
-            if(mysqli_num_rows($query) != 0) {
-                while($array = mysqli_fetch_array($query)) {
+                while($array = $query->fetch(PDO::FETCH_ASSOC)) {
                     echo "
                     <button type='submit' value='" . $array['id'] . "' name='botao_clicado'>
                         <div class='filmes'>
@@ -77,39 +78,31 @@
                         </div>
                     </button>";
                 }
-            }else {
-                echo "<div id='aviso'><h1>Não foi possível encontrar o filme</h1></div>";
-            }
-            echo "</form>";
         }else {
             $id = $_POST['genero'];
-            $string2 = "select * from filme WHERE genero LIKE '" . $id . ", %' OR genero LIKE '%, " . $id . ", %' OR genero LIKE '%, " . $id . "' OR genero = '" . $id . "';";
+            $string2 = "select * from filme WHERE genero LIKE :id OR genero LIKE :id2 OR genero LIKE :id3 OR genero = :id4;";
             
-            $query2 = mysqli_query($connection, $string2);
+            $query2 = $connection->prepare($string2);
+            $query2->execute([':id' => "$id, %", ':id2' => "%, $id, %", ':id3' => "%, $id", ':id4' => $id]);
             echo "<form action='./filme.php' id='resultado' method='post'>";
-            if(mysqli_num_rows($query2) != 0) {
-                while($array2 = mysqli_fetch_array($query2)) {
-                    echo "
-                    <button type='submit' value='" . $array2['id'] . "' name='botao_clicado' class='filmes'>
-                        <img src='" . $array2['caminho_img'] . "' alt=''>
-                        <h3>" . $array2['nomeFilme'] . "</h3>
-                    </button>";
-                }
-            }else {
-                echo "</form>";
-                echo "<div id='aviso'><h1>Não foi possível encontrar o filme</h1></div>";
+            while($array2 = $query2->fetch(PDO::FETCH_ASSOC)) {
+                echo "
+                <button type='submit' value='" . $array2['id'] . "' name='botao_clicado' class='filmes'>
+                    <img src='" . $array2['caminho_img'] . "' alt=''>
+                    <h3>" . $array2['nomeFilme'] . "</h3>
+                </button>";
             }
         }
     ?>
         <a href="./novoFilme.php" id="adicionar">
-            <div class='filmes' style="width: 160px">
+            <div class='filmes' style="height:275px; width: 160px">
                 <div>
                     <img src="../img/add.png" alt=''>
                 </div>
-                <h3>Adicionar Novo Filme</h3>
+                <h3 style="font-size: 12px">Adicionar Novo Filme</h3>
             </div>
         </a>
-
+    </form>
         <script>
             var adicionar = document.getElementById("adicionar");
 

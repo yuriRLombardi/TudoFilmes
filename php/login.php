@@ -14,9 +14,10 @@ if(isset($_POST["email"]) && isset($_POST["senha"])){
     $senha = $_POST["senha"];
     $valido = false;
 
-    $comando = mysqli_query($connection, "select * from usuario");
+    $comando = $connection->prepare("select * from usuario");
+    $comando->execute();
 
-    while($array = mysqli_fetch_array($comando)) {
+    while($array = $comando->fetch(PDO::FETCH_ASSOC)) {
         if($email == $array['email'] && $senha == $array['senha']) {
             $valido = true;
             break;
@@ -24,7 +25,9 @@ if(isset($_POST["email"]) && isset($_POST["senha"])){
     }
     
     if($valido == true) {
-        $array = mysqli_fetch_array(mysqli_query($connection,'select * from usuario where email = "' . $email . '";'));
+        $sql = $connection->prepare('select * from usuario where email = :email;');
+        $sql->execute([':email' => $email]);
+        $array = $sql->fetch(PDO::FETCH_ASSOC);
 
         session_start();
         $_SESSION['id'] = $array['id'];
@@ -32,6 +35,9 @@ if(isset($_POST["email"]) && isset($_POST["senha"])){
         $_SESSION['email'] = $array['email'];
         $_SESSION['senha'] = $array['senha'];
         $_SESSION['path'] = $array['caminho_img'];
+        $dataNasc = substr($array['dataNasc'], 0, 4);
+
+        $_SESSION['dataNasc'] = $dataNasc;
 
         $nome = $array['nome'];
         echo "<script>

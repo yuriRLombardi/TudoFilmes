@@ -24,9 +24,10 @@
                         include "../php/connection.php";
 
                         $string = "select * from genero";
-                        $sql = mysqli_query($connection, $string);
+                        $sql = $connection->prepare($string);
+                        $sql->execute();
 
-                        while($array = mysqli_fetch_array($sql)) {
+                        while($array = $sql->fetch(PDO::FETCH_ASSOC)) {
                             echo "<button type='submit' name='genero' value='" . $array['id'] . "'><li>" . $array['genero'] . "</li></button>";
                         }
                         ?>
@@ -60,9 +61,11 @@
         
         $string = "select * from diretor";
         
-        $query = mysqli_query($connection, $string);
+        $query = $connection->prepare($string);
+        $query->execute();
+
         echo "<form action='./diretor.php' id='resultado' method='post'>";
-        while($array = mysqli_fetch_array($query)) {
+        while($array = $query->fetch(PDO::FETCH_ASSOC)) {
             echo "
             <button type='submit' value='" . $array['id'] . "' name='botao_clicado'>
                 <div class='diretor'>

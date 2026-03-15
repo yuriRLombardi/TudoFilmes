@@ -9,8 +9,9 @@ if(isset($_POST['nome']) && isset($_POST['media_estrelas']) && isset($_POST['gen
     $sin = $_POST['sin'];
 
     $stringId = "select id from filme order by id desc";
-    $sqlId = mysqli_query($connection, $stringId);
-    $fetchId = mysqli_fetch_array($sqlId);
+    $sqlId = $connection->prepare($stringId);
+    $sqlId->execute();
+    $fetchId = $sqlId->fetch(PDO::FETCH_ASSOC);
     $idSeg = $fetchId['id'];
     $idSeg++;
 
@@ -29,8 +30,9 @@ if(isset($_POST['nome']) && isset($_POST['media_estrelas']) && isset($_POST['gen
     $ano = $_POST['ano'];
     $diretor = $_POST['diretor'];
 
-    $string = "insert into filme (nomeFilme, media_estrelas, genero, duracao, sinopse, caminho_img, link_trailer, streamings, ano_publicacao, id_diretor) values ('$nome', $media_estrelas, '$generos', $duracao, '$sin', '$path', '$link', '$streamings', $ano, $diretor)";
-    $sql = mysqli_query($connection, $string);
+    $string = "insert into filme (nomeFilme, media_estrelas, genero, duracao, sinopse, caminho_img, link_trailer, streamings, ano_publicacao, id_diretor) values (:nomeFilme, :media_estrelas, :genero, :duracao, :sinopse, :caminho_img, :link_trailer, :streamings, :ano_publicacao, :id_diretor)";
+    $sql = $connection->prepare($string);
+    $sql->execute([':nomeFilme' => $nome, ':media_estrelas' => $media_estrelas, ':genero' => $generos, ':duracao' => $duracao, ':sinopse' => $sin, ':caminho_img' => $path, ':link_trailer' => $link, ':streamings' => $streamings, ':ano_publicacao' => $ano, ':id_diretor' => $diretor]);
 
     header("Location: ../index.php");
 }else {
