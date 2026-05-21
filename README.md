@@ -3,6 +3,37 @@
 Aplicação web de catálogo e avaliação de filmes desenvolvida como Trabalho de Conclusão de Curso (TCC), utilizando PHP, HTML, CSS, JavaScript e MySQL. O sistema permite cadastro de usuários, gerenciamento de filmes e interação com avaliações e comentários.
 
 > Projeto desenvolvido em grupo com foco na aplicação de conceitos de desenvolvimento web, integração com banco de dados e organização de funcionalidades em aplicações web.
+---
+
+## 📸 Demonstração
+
+### 🔑 Tela de Login
+
+![Login](./docs/images/login.png)
+
+---
+
+### 🎬 Catálogo de Filmes
+
+![Catalogo](./docs/images/catalogo.png)
+
+---
+
+### ⭐ Sistema de Avaliações
+
+![Avaliacoes](./docs/images/avaliacao.png)
+
+---
+
+### 💬 Sistema de Comentários
+
+![Comentarios](./docs/images/comentario.png)
+
+---
+
+### 🎥 Demonstração da Aplicação
+
+![Demo](./docs/images/demonstracao.gif)
 
 ---
 
