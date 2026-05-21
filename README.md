@@ -181,7 +181,13 @@ Projeto desenvolvido em grupo como Trabalho de Conclusão de Curso (TCC).
 - Criação de diagramas de casos de usos e modelo entidade relacionamento(MER)
 
 ---
+## 📄 Artigo do Projeto
 
+O artigo desenvolvido para o Trabalho de Conclusão de Curso pode ser consultado abaixo:
+
+📥 [Visualizar artigo](./docs/artigo/TudoFimes-artigo.pdf)
+
+---
 ## 👨‍💻 Autor
 
 Yuri Rodrigues Lombardi  
