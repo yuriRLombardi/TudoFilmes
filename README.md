@@ -185,7 +185,7 @@ Projeto desenvolvido em grupo como Trabalho de Conclusão de Curso (TCC).
 
 O artigo desenvolvido para o Trabalho de Conclusão de Curso pode ser consultado abaixo:
 
-📥 [Visualizar artigo](./docs/artigo/TudoFimes-artigo.pdf)
+📥 [Visualizar artigo](./docs/artigo/TudoFilmes-artigo.pdf)
 
 ---
 ## 👨‍💻 Autor
