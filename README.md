@@ -7,6 +7,12 @@ Aplicação web de catálogo e avaliação de filmes desenvolvida como Trabalho 
 
 ## 📸 Demonstração
 
+### 🎥 Demonstração da Aplicação
+
+![Demo](./docs/images/demonstracao.gif)
+
+---
+
 ### 🔑 Tela de Login
 
 ![Login](./docs/images/login.png)
@@ -28,12 +34,6 @@ Aplicação web de catálogo e avaliação de filmes desenvolvida como Trabalho 
 ### 💬 Sistema de Comentários
 
 ![Comentarios](./docs/images/comentario.png)
-
----
-
-### 🎥 Demonstração da Aplicação
-
-![Demo](./docs/images/demonstracao.gif)
 
 ---
 
