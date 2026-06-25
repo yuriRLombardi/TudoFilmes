@@ -45,13 +45,18 @@ O projeto foi desenvolvido com o objetivo de criar uma plataforma web para consu
 
 ## ⚙️ Funcionalidades
 
-- Cadastro e autenticação de usuários  
-- Catálogo de filmes  
-- Sistema de avaliações e comentários  
-- Consulta de informações dos filmes  
-- Interface web responsiva  
-- Integração com banco de dados MySQL  
-- Gerenciamento de sessões de usuário  
+- Disponibilização de informações de filmes para avaliar incluindo os diretores
+- Campos de comentários
+- Criação de listas de filmes tanto pelo usuário tanto de forma automática pelo sistema
+- Ranking de filmes mais bem avaliados
+- Diferenciação de usuários logados dos usuários não logados
+- Sistema de login e cadastro dos usuários
+- Edição de Perfil no Site
+- Sistema de Recomendações
+- Filtragem de filmes pela idade
+- Média de estrelas para usuários
+- Gerenciamento de filmes pelo administrador
+- Marcação de filmes assistidos e favoritos  
 
 ---
 
