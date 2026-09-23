@@ -173,7 +173,7 @@ http://localhost/tudofilmes
 
 ## 👥 Trabalho em Grupo
 
-Projeto desenvolvido em grupo como Trabalho de Conclusão de Curso (TCC).
+Projeto desenvolvido em conjunto com outras três pessoas para o Trabalho de Conclusão de Curso (TCC).
 
 ### Minha participação no projeto
 
