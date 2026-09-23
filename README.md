@@ -52,7 +52,6 @@ O projeto foi desenvolvido com o objetivo de criar uma plataforma web para consu
 - Diferenciação de usuários logados dos usuários não logados
 - Sistema de login e cadastro dos usuários
 - Edição de Perfil no Site
-- Sistema de Recomendações
 - Filtragem de filmes pela idade
 - Média de estrelas para usuários
 - Gerenciamento de filmes pelo administrador
@@ -167,8 +166,7 @@ http://localhost/tudofilmes
 - Sistema de recomendação de filmes  
 - Filtros avançados de pesquisa  
 - Integração com APIs externas de filmes  
-- Página de perfil do usuário  
-- Sistema de favoritos  
+- Melhorar a página de perfil do usuário   
 - Melhorias de responsividade e acessibilidade  
 
 ---
